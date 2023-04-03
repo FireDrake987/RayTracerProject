@@ -1,4 +1,4 @@
-package types;
+package rayTracing;
 
 public class Direction {
 	private double ratioX, ratioY, ratioZ;
