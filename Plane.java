@@ -17,18 +17,28 @@ public class Plane {
 		return intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
 	}
 	public boolean intersects(Point3D C, Point3D P) {
-		double Cx, Cy, Cz, Px, Py, Pz, t, Ix, Iy, Iz;
+		double Cx, Cy, Cz, Px, Py, Pz, t, Ix, Iy, Iz, aWeight, bWeight, cWeight;
 		Cx = C.getX();
 		Cy = C.getY();
 		Cz = C.getZ();
 		Px = P.getX();
 		Py = P.getY();
 		Pz = P.getZ();
+		if((A * (Px - Cx) + B * (Py - Cy) + this.C * (Pz - Cz))  == 0) {
+			return false;//No intersection
+		}
 		t = (-A * Cx - B * Cy - this.C * Cz - D)  / (A * (Px - Cx) + B * (Py - Cy) + this.C * (Pz - Cz));
 		Ix = (1-t)*Cx + t*Px;
 		Iy = (1-t)*Cy + t*Py;
 		Iz = (1-t)*Cz + t*Pz;
-		//if() {}
-		return false;
+		Point3D I = new Point3D(Ix, Iy, Iz);
+		Vector N = new Vector(boundingPoints[0], boundingPoints[1]).cross(new Vector(boundingPoints[0], boundingPoints[2]));
+		aWeight = N.dot(new Vector(boundingPoints[1], I).cross(new Vector(boundingPoints[2], I)));
+		bWeight = N.dot(new Vector(boundingPoints[2], I).cross(new Vector(boundingPoints[0], I)));
+		cWeight = N.dot(new Vector(boundingPoints[0], I).cross(new Vector(boundingPoints[1], I)));
+		if(aWeight >= 0 && bWeight >= 0 && cWeight >= 0) {
+			return true;//Point found, and in triangle
+		}
+		return false;//Point found, but not in triangle
 	}
 }
