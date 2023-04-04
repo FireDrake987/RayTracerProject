@@ -1,4 +1,4 @@
-package types;
+package rayTracing;
 
 public class Triangle3D {
 	public Point3D[] points;

@@ -1,4 +1,4 @@
-package types;
+package rayTracing;
 
 public class Point3D {
 	private double x, y, z;
@@ -18,5 +18,8 @@ public class Point3D {
 	}
 	public Point3D average(Point3D pnt) {
 		return new Point3D((pnt.getX() + getX()) / 2.0, (pnt.getY() + getY()) / 2.0, (pnt.getZ() + getZ()) / 2.0);
+	}
+	public Point3D add(Point3D pnt) {
+		return new Point3D(pnt.getX() + getX(), pnt.getY() + getY(), pnt.getZ() + getZ());
 	}
 }

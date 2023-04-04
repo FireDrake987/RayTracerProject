@@ -1,4 +1,4 @@
-package types;
+package rayTracing;
 
 public class Vector {
 	private Direction direction;
