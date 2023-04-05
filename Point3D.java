@@ -22,4 +22,7 @@ public class Point3D {
 	public Point3D add(Point3D pnt) {
 		return new Point3D(pnt.getX() + getX(), pnt.getY() + getY(), pnt.getZ() + getZ());
 	}
+	public String toString() {
+		return "(" + getX() + ", " + getY() + ", " + getZ() + ")";
+	}
 }

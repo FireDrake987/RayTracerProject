@@ -36,6 +36,6 @@ public class Vector {
 		return getX() * vec.getX() + getY() * vec.getY() + getZ() * vec.getZ();
 	}
 	public Vector cross(Vector vec) {
-		return new Vector(new Point3D(getY() * vec.getZ() - getZ() * vec.getY(), getZ() * vec.getX() - getX() * vec.getZ(), getX() * vec.getY() - getY() * vec.getZ()));
+		return new Vector(new Point3D(getY() * vec.getZ() - getZ() * vec.getY(), getZ() * vec.getX() - getX() * vec.getZ(), getX() * vec.getY() - getY() * vec.getX()));
 	}
 }

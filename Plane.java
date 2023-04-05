@@ -13,6 +13,12 @@ public class Plane {
 		C = normal.getZ();
 		D = (-1 * A * point1.getX()) + (-1 * B * point1.getY()) + (-1 * C * point1.getZ());
 	}
+	public Plane(double A, double B, double C, double D) {
+		this.A = A;
+		this.B = B;
+		this.C = C;
+		this.D = D;
+	}
 	public boolean intersects(Ray ray) {
 		return intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
 	}
@@ -24,10 +30,10 @@ public class Plane {
 		Px = P.getX();
 		Py = P.getY();
 		Pz = P.getZ();
-		if((A * (Px - Cx) + B * (Py - Cy) + this.C * (Pz - Cz))  == 0) {
+		if((A * (Px - Cx)) + (B * (Py - Cy)) + (this.C * (Pz - Cz)) == 0) {
 			return false;//No intersection
 		}
-		t = (-A * Cx - B * Cy - this.C * Cz - D)  / (A * (Px - Cx) + B * (Py - Cy) + this.C * (Pz - Cz));
+		t = ((-A * Cx) - (B * Cy) - (this.C * Cz) - D)  / ((A * (Px - Cx)) + (B * (Py - Cy)) + (this.C * (Pz - Cz)));
 		Ix = (1-t)*Cx + t*Px;
 		Iy = (1-t)*Cy + t*Py;
 		Iz = (1-t)*Cz + t*Pz;
