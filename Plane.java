@@ -34,6 +34,9 @@ public class Plane {
 			return null;//No intersection
 		}
 		t = ((-A * Cx) - (B * Cy) - (this.C * Cz) - D)  / ((A * (Px - Cx)) + (B * (Py - Cy)) + (this.C * (Pz - Cz)));
+		if(t < 0) {
+			return null;//Intersection behind ray
+		}
 		Ix = (1-t)*Cx + t*Px;
 		Iy = (1-t)*Cy + t*Py;
 		Iz = (1-t)*Cz + t*Pz;
