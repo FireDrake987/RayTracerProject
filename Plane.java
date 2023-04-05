@@ -19,11 +19,11 @@ public class Plane {
 		this.C = C;
 		this.D = D;
 	}
-	public boolean intersects(Ray ray) {
-		return intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
+	public Point3D getIntersection(Ray ray) {
+		return getIntersection(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
 	}
-	public boolean intersects(Point3D C, Point3D P) {
-		double Cx, Cy, Cz, Px, Py, Pz, t, Ix, Iy, Iz, aWeight, bWeight, cWeight;
+	public Point3D getIntersection(Point3D C, Point3D P) {
+		double Cx, Cy, Cz, Px, Py, Pz, t, Ix, Iy, Iz;
 		Cx = C.getX();
 		Cy = C.getY();
 		Cz = C.getZ();
@@ -31,13 +31,20 @@ public class Plane {
 		Py = P.getY();
 		Pz = P.getZ();
 		if((A * (Px - Cx)) + (B * (Py - Cy)) + (this.C * (Pz - Cz)) == 0) {
-			return false;//No intersection
+			return null;//No intersection
 		}
 		t = ((-A * Cx) - (B * Cy) - (this.C * Cz) - D)  / ((A * (Px - Cx)) + (B * (Py - Cy)) + (this.C * (Pz - Cz)));
 		Ix = (1-t)*Cx + t*Px;
 		Iy = (1-t)*Cy + t*Py;
 		Iz = (1-t)*Cz + t*Pz;
-		Point3D I = new Point3D(Ix, Iy, Iz);
+		return new Point3D(Ix, Iy, Iz);
+	}
+	public boolean intersects(Ray ray) {
+		return intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
+	}
+	public boolean intersects(Point3D C, Point3D P) {
+		double aWeight, bWeight, cWeight;
+		Point3D I = getIntersection(C, P);
 		Vector N = new Vector(boundingPoints[0], boundingPoints[1]).cross(new Vector(boundingPoints[0], boundingPoints[2]));
 		aWeight = N.dot(new Vector(boundingPoints[1], I).cross(new Vector(boundingPoints[2], I)));
 		bWeight = N.dot(new Vector(boundingPoints[2], I).cross(new Vector(boundingPoints[0], I)));
