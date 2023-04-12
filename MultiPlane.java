@@ -17,4 +17,16 @@ public class MultiPlane {
 		color = col;
 		planes = plns;
 	}
+	public java.awt.Color getColor() {
+		return color;
+	}
+	public double intersects(Ray ray) {
+		double highestBidder = Double.MAX_VALUE;
+		for(Plane plane : planes) {
+			if(plane.intersects(ray) < highestBidder) {
+				highestBidder = plane.intersects(ray);
+			}
+		}
+		return highestBidder;
+	}
 }

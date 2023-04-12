@@ -42,19 +42,23 @@ public class Plane {
 		Iz = (1-t)*Cz + t*Pz;
 		return new Point3D(Ix, Iy, Iz);
 	}
-	public boolean intersects(Ray ray) {
+	public double intersects(Ray ray) {
 		return intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
 	}
-	public boolean intersects(Point3D C, Point3D P) {
+	public double intersects(Point3D C, Point3D P) {
 		double aWeight, bWeight, cWeight;
 		Point3D I = getIntersection(C, P);
+		if(I == null) {
+			return Double.MAX_VALUE;
+		}
 		Vector N = new Vector(boundingPoints[0], boundingPoints[1]).cross(new Vector(boundingPoints[0], boundingPoints[2]));
 		aWeight = N.dot(new Vector(boundingPoints[1], I).cross(new Vector(boundingPoints[2], I)));
 		bWeight = N.dot(new Vector(boundingPoints[2], I).cross(new Vector(boundingPoints[0], I)));
 		cWeight = N.dot(new Vector(boundingPoints[0], I).cross(new Vector(boundingPoints[1], I)));
 		if(aWeight >= 0 && bWeight >= 0 && cWeight >= 0) {
-			return true;//Point found, and in triangle
+			double t = ((-A * C.getX()) - (B * C.getY()) - (this.C * C.getZ()) - D)  / ((A * (P.getX() - C.getX())) + (B * (P.getY() - C.getY())) + (this.C * (P.getZ() - C.getZ())));
+			return t;//Point found, and in triangle
 		}
-		return false;//Point found, but not in triangle
+		return Double.MAX_VALUE;//Point found, but not in triangle
 	}
 }
