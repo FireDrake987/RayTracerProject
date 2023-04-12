@@ -14,7 +14,7 @@ public class Camera extends JPanel {
 	private double antialiasingValue;
 	private JFrame frame = new JFrame();
 	private MultiPlane[] planes;
-	public Camera(double width, double height, double VerticalFOV, double HorizontalFOV, double xPos, double yPos, double zPos, double Yaw, double Pitch, double quality, MultiPlane ... Planes) {
+	public Camera(double width, double height, double VerticalFOV, double HorizontalFOV, double xPos, double yPos, double zPos, double Yaw, double Pitch, double quality, MultiPlane[] Planes) {
 		w = width;
 		h = height;
 		x = xPos;
@@ -28,11 +28,14 @@ public class Camera extends JPanel {
 		planes = Planes;
 		this.setSize((int) w, (int) h);
 		frame.add(this);
-		frame.pack();
+		frame.setSize((int) w, (int) h);
 	}
 	public void paintComponent(Graphics g) {
+		System.out.println("PAINT");
 		for(double yw = yaw - H_FOV * (1/2); yw < yaw + H_FOV * (1/2); yw += H_FOV / (antialiasingValue * w)) {
-			for(double ptch = pitch - V_FOV * (1/2); ptch < ptch + V_FOV * (1/2); ptch += V_FOV / (antialiasingValue * h)) {
+			System.out.println("dml1");
+			for(double ptch = pitch - V_FOV * (1/2); ptch < pitch + V_FOV * (1/2); ptch += V_FOV / (antialiasingValue * h)) {
+				System.out.printf("%s is yaw\n%s is pitch", yw, ptch);
 				double vecX = Math.cos(ptch) * Math.sin(yw);
 				double vecY = Math.sin(ptch);
 				double vecZ = Math.cos(ptch) * Math.cos(yw);
