@@ -2,6 +2,7 @@ package rayTracing;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -31,11 +32,10 @@ public class Camera extends JPanel {
 		frame.setSize((int) w, (int) h);
 	}
 	public void paintComponent(Graphics g) {
-		System.out.println("PAINT");
-		for(double yw = yaw - H_FOV * (1/2); yw < yaw + H_FOV * (1/2); yw += H_FOV / (antialiasingValue * w)) {
-			System.out.println("dml1");
-			for(double ptch = pitch - V_FOV * (1/2); ptch < pitch + V_FOV * (1/2); ptch += V_FOV / (antialiasingValue * h)) {
-				System.out.printf("%s is yaw\n%s is pitch", yw, ptch);
+		super.paintComponent(g);
+		Graphics2D g2d = (Graphics2D) g;
+		for(double yw = yaw - H_FOV * 0.5; yw < yaw + H_FOV * 0.5; yw += H_FOV / (antialiasingValue * w)) {
+			for(double ptch = pitch - V_FOV * 0.5; ptch < pitch + V_FOV * 0.5; ptch += V_FOV / (antialiasingValue * h)) {
 				double vecX = Math.cos(ptch) * Math.sin(yw);
 				double vecY = Math.sin(ptch);
 				double vecZ = Math.cos(ptch) * Math.cos(yw);
@@ -45,21 +45,27 @@ public class Camera extends JPanel {
 				MultiPlane lowPlane = null;
 				for(MultiPlane plane : planes) {
 					double dist = plane.intersects(ray);
+					if(dist < 0) {
+						continue;
+					}
 					if(dist < lowDist) {
 						lowPlane = plane;
 						lowDist = dist;
 					}
 				}
 				if(lowPlane != null && lowDist >= 0) {
-					Color color = lowPlane.getColor();
-					g.setColor(color);
-					double xPos = yw - yaw + H_FOV * (1/2);
+					double xPos = yw - yaw;
+					xPos += H_FOV * 0.5;
 					xPos /= H_FOV;
 					xPos *= w;
-					double yPos = ptch - pitch + V_FOV * (1/2);
+					double yPos = ptch - pitch;
+					yPos += V_FOV * 0.5;
 					yPos /= V_FOV;
 					yPos *= h;
-					g.fillRect((int) xPos, (int) yPos, (int) (1 / antialiasingValue), (int) (1 / antialiasingValue));
+					Color color = lowPlane.getColor();
+					g2d.setColor(color);
+					g2d.fillRect((int) Math.floor(xPos), (int) Math.floor(yPos), (int) Math.ceil(1 / antialiasingValue), (int) Math.ceil(1 / antialiasingValue));
+					System.out.printf("%s x %s y %s w %s h\n", xPos, yPos, (1 / antialiasingValue), (1 / antialiasingValue));
 				}
 			}
 		}

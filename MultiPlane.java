@@ -27,8 +27,8 @@ public class MultiPlane {
 				highestBidder = plane.intersects(ray);
 			}
 		}
-		if(highestBidder > 0) {
-			System.out.println(highestBidder);
+		if(highestBidder < 0 || Math.abs(highestBidder - Double.MAX_VALUE) <= 0.00000000001 * Double.MAX_VALUE) {
+			return -1;
 		}
 		return highestBidder;
 	}
