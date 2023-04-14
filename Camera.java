@@ -13,7 +13,7 @@ public class Camera extends JPanel {
 	public final double V_FOV, H_FOV;
 	private double x, y, z, w, h;
 	private double antialiasingValue;
-	private JFrame frame = new JFrame();
+	public JFrame frame = new JFrame();
 	private MultiPlane[] planes;
 	public Camera(double width, double height, double VerticalFOV, double HorizontalFOV, double xPos, double yPos, double zPos, double Yaw, double Pitch, double quality, MultiPlane[] Planes) {
 		w = width;
@@ -70,10 +70,23 @@ public class Camera extends JPanel {
 			}
 		}
 	}
+	public void move(double RightMovement, double UpMovement, double ForwardsMovement) {
+		x += Math.cos(pitch) * Math.sin(yaw)* RightMovement;
+		y += Math.sin(pitch) * UpMovement;
+		z += Math.cos(pitch) * Math.cos(yaw) * ForwardsMovement;
+	}
+	public void rotate(double pitch, double yaw) {
+		this.pitch += (Math.PI * pitch) / h;
+		this.yaw += (Math.PI * yaw) / w;
+	}
+	public int getMoveRight() {return 0;}//To be overridden
+	public int getMoveUp() {return 0;}//To be overridden
+	public int getMoveForwards() {return 0;}//To be overridden
 	public void start() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		while(true) {
+			move(getMoveRight(), getMoveUp(), getMoveForwards());
 			frame.repaint();
 			try {
 				Thread.sleep(100);
