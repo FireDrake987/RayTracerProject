@@ -21,7 +21,7 @@ public class Main {
 				new MultiPlane(new java.awt.Color(255, 0, 255), new Point3D(0, 0, 0), new Point3D(10, 0, 0), new Point3D(10, 0, 10), new Point3D(0, 0, 10)), 
 				new MultiPlane(new java.awt.Color(0, 255, 255), new Point3D(0, 0, 10), new Point3D(10, 0, 10), new Point3D(10, 10, 10), new Point3D(0, 10, 10))
 		};
-		Camera cam = new Camera(400, 200, Math.PI, (135 / 180.0) * Math.PI, 5, 5, -10, 0, 0, 2, scene) {
+		Camera cam = new Camera(1200, 600, Math.PI, (135 / 180.0) * Math.PI, 5, 5, -10, 0, 0, 1.15, scene) {
 			private static final long serialVersionUID = 1L;
 			public int getMoveRight() {
 				if(Main.dPressed == true) {
@@ -36,10 +36,10 @@ public class Main {
 			}
 			public int getMoveUp() {
 				if(Main.spacePressed == true) {
-					return 1;
+					return -1;
 				}
 				else if(Main.shiftPressed == true) {
-					return -1;
+					return 1;
 				}
 				else {
 					return 0;
@@ -71,7 +71,7 @@ public class Main {
 				if(e.getKeyChar() == 'd') {
 					dPressed = true;
 				}
-				if(e.getKeyCode() == 49) {//Space bar
+				if(e.getKeyChar() == ' ') {
 					spacePressed = true;
 				}
 				if(e.getKeyCode() == 16) {//Shift key
@@ -91,7 +91,7 @@ public class Main {
 				if(e.getKeyChar() == 'd') {
 					dPressed = false;
 				}
-				if(e.getKeyCode() == 49) {//Space bar
+				if(e.getKeyChar() == ' ') {
 					spacePressed = false;
 				}
 				if(e.getKeyCode() == 16) {//Shift key

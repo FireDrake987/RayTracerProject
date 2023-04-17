@@ -23,11 +23,12 @@ public class MultiPlane {
 	public double intersects(Ray ray) {
 		double highestBidder = Double.MAX_VALUE;
 		for(Plane plane : planes) {
-			if(plane.intersects(ray) < highestBidder) {
-				highestBidder = plane.intersects(ray);
+			double intersection = plane.intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
+			if(intersection < highestBidder && intersection >= 0) {
+				highestBidder = intersection;
 			}
 		}
-		if(highestBidder < 0 || Math.abs(highestBidder - Double.MAX_VALUE) <= 0.00000000001 * Double.MAX_VALUE) {
+		if(Math.abs(highestBidder - Double.MAX_VALUE) <= 0.00000000001 * Double.MAX_VALUE) {
 			return -1;
 		}
 		return highestBidder;

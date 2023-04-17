@@ -48,7 +48,7 @@ public class Camera extends JPanel {
 					if(dist < 0) {
 						continue;
 					}
-					if(dist < lowDist) {
+					else if(dist < lowDist) {
 						lowPlane = plane;
 						lowDist = dist;
 					}
@@ -65,7 +65,7 @@ public class Camera extends JPanel {
 					Color color = lowPlane.getColor();
 					g2d.setColor(color);
 					g2d.fillRect((int) Math.floor(xPos), (int) Math.floor(yPos), (int) Math.ceil(1 / antialiasingValue), (int) Math.ceil(1 / antialiasingValue));
-					System.out.printf("%s x %s y %s w %s h\n", xPos, yPos, (1 / antialiasingValue), (1 / antialiasingValue));
+					//System.out.printf("%s x %s y %s w %s h\n", xPos, yPos, (1 / antialiasingValue), (1 / antialiasingValue));
 				}
 			}
 		}
@@ -78,6 +78,13 @@ public class Camera extends JPanel {
 	public void rotate(double pitch, double yaw) {
 		this.pitch += (Math.PI * pitch) / h;
 		this.yaw += (Math.PI * yaw) / w;
+	}
+	public void maximize() {
+		h = frame.getMaximumSize().height;
+		w = frame.getMaximumSize().width;
+		frame.setSize((int) w, (int) h);
+		this.setSize((int) w, (int) h);
+		frame.repaint();
 	}
 	public int getMoveRight() {return 0;}//To be overridden
 	public int getMoveUp() {return 0;}//To be overridden
