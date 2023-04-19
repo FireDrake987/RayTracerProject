@@ -42,6 +42,7 @@ public class Camera extends JPanel {
 				Vector vec = new Vector(new Point3D(vecX, vecY, vecZ));
 				Ray ray = new Ray(new Point3D(x, y, z), vec);
 				double lowDist = Double.MAX_VALUE;
+				Point3D lowInt = null;
 				MultiPlane lowPlane = null;
 				for(MultiPlane plane : planes) {
 					double dist = plane.intersects(ray);
@@ -51,6 +52,7 @@ public class Camera extends JPanel {
 					else if(dist < lowDist) {
 						lowPlane = plane;
 						lowDist = dist;
+						lowInt  = plane.getIntersection(ray);
 					}
 				}
 				if(lowPlane != null && lowDist >= 0) {
@@ -62,7 +64,7 @@ public class Camera extends JPanel {
 					yPos += V_FOV * 0.5;
 					yPos /= V_FOV;
 					yPos *= h;
-					Color color = lowPlane.getColor();
+					Color color = lowPlane.getColor(lowInt);
 					g2d.setColor(color);
 					g2d.fillRect((int) Math.floor(xPos), (int) Math.floor(yPos), (int) Math.ceil(1 / antialiasingValue), (int) Math.ceil(1 / antialiasingValue));
 					//System.out.printf("%s x %s y %s w %s h\n", xPos, yPos, (1 / antialiasingValue), (1 / antialiasingValue));

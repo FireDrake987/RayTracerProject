@@ -2,7 +2,8 @@ package rayTracing;
 
 public class MultiPlane {
 	private java.awt.Color color;
-	private Plane[] planes;
+	public Plane[] planes;
+	public MultiPlane() {}//In case any subclasses get lazy
 	public MultiPlane(java.awt.Color col, Point3D ... pnts) {
 		color = col;
 		if(pnts.length < 3) {
@@ -17,10 +18,32 @@ public class MultiPlane {
 		color = col;
 		planes = plns;
 	}
-	public java.awt.Color getColor() {
+	public java.awt.Color getColor(Point3D intersectionPoint) {
 		return color;
 	}
+	public Point3D getIntersection(Ray ray) {
+		if(planes == null) {
+			return null;
+		}
+		double highestBidder = Double.MAX_VALUE;
+		int highestSpot = -1;
+		for(int i = 0; i < planes.length; i ++) {
+			Plane plane = planes[i];
+			double intersection = plane.intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
+			if(intersection < highestBidder && intersection >= 0) {
+				highestBidder = intersection;
+				highestSpot = i;
+			}
+		}
+		if(Math.abs(highestBidder - Double.MAX_VALUE) <= 0.00000000001 * Double.MAX_VALUE) {
+			return null;
+		}
+		return planes[highestSpot].getIntersection(ray);
+	}
 	public double intersects(Ray ray) {
+		if(planes == null) {
+			return -1;
+		}
 		double highestBidder = Double.MAX_VALUE;
 		for(Plane plane : planes) {
 			double intersection = plane.intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));
