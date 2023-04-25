@@ -41,6 +41,9 @@ public class Cube extends MultiPlane {
 		int red = (int) (((1 - weightX) * color.getRed()) + (weightX * colX.getRed()) + ((1 - weightY) * color.getRed()) + (weightY * colY.getRed()) + ((1 - weightZ) * color.getRed()) + (weightZ * colZ.getRed()));
 		int green = (int) (((1 - weightX) * color.getGreen()) + (weightX * colX.getGreen()) + ((1 - weightY) * color.getGreen()) + (weightY * colY.getGreen()) + ((1 - weightZ) * color.getGreen()) + (weightZ * colZ.getGreen()));
 		int blue = (int) (((1 - weightX) * color.getBlue()) + (weightX * colX.getBlue()) + ((1 - weightY) * color.getBlue()) + (weightY * colY.getBlue()) + ((1 - weightZ) * color.getBlue()) + (weightZ * colZ.getBlue()));
+		red /= 3;//Fix the weighting to darken instead of lighten
+		green /= 3;
+		blue /= 3;
 		Color col = new Color(red, green, blue);
 		return col;
 	}

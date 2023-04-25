@@ -33,6 +33,7 @@ public class Camera extends JPanel {
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		long smillis = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D) g;
 		for(double yw = yaw - H_FOV * 0.5; yw < yaw + H_FOV * 0.5; yw += H_FOV / (antialiasingValue * w)) {
 			for(double ptch = pitch - V_FOV * 0.5; ptch < pitch + V_FOV * 0.5; ptch += V_FOV / (antialiasingValue * h)) {
@@ -71,6 +72,9 @@ public class Camera extends JPanel {
 				}
 			}
 		}
+		long elapsedmillis = System.currentTimeMillis() - smillis;
+		System.out.printf("Frame took %s millis\n", elapsedmillis);
+		System.out.printf("Framerate: %s\n", 1.0 / (elapsedmillis / 1000.0));
 	}
 	public void move(double RightMovement, double UpMovement, double ForwardsMovement) {
 		//x += Math.cos(pitch) * Math.sin(yaw + Math.PI) * -RightMovement;
