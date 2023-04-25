@@ -22,9 +22,6 @@ public class MultiPlane {
 		return color;
 	}
 	public Point3D getIntersection(Ray ray) {
-		if(planes == null) {
-			return null;
-		}
 		double highestBidder = Double.MAX_VALUE;
 		int highestSpot = -1;
 		for(int i = 0; i < planes.length; i ++) {
@@ -41,9 +38,6 @@ public class MultiPlane {
 		return planes[highestSpot].getIntersection(ray);
 	}
 	public double intersects(Ray ray) {
-		if(planes == null) {
-			return -1;
-		}
 		double highestBidder = Double.MAX_VALUE;
 		for(Plane plane : planes) {
 			double intersection = plane.intersects(ray.getPoint(), ray.getPoint().add(ray.getVector().getPoint()));

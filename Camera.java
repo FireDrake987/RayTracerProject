@@ -73,8 +73,17 @@ public class Camera extends JPanel {
 		}
 	}
 	public void move(double RightMovement, double UpMovement, double ForwardsMovement) {
-		x += Math.cos(pitch) * Math.sin(yaw)* RightMovement;
-		y += Math.sin(pitch) * UpMovement;
+		//x += Math.cos(pitch) * Math.sin(yaw + Math.PI) * -RightMovement;
+		//y += Math.sin(pitch) * UpMovement;
+		//z += Math.cos(pitch) * Math.cos(yaw + 0.5 * Math.PI) * ForwardsMovement;
+		x += Math.cos(pitch) * Math.sin(yaw + 0.5 * Math.PI) * RightMovement;
+		y += Math.sin(pitch) * RightMovement;
+		z += Math.cos(pitch) * Math.cos(yaw + 0.5 * Math.PI) * RightMovement;
+		x += Math.cos(pitch + 0.5 * Math.PI) * Math.sin(yaw) * UpMovement;
+		y += Math.sin(pitch + 0.5 * Math.PI) * UpMovement;
+		z += Math.cos(pitch + 0.5 * Math.PI) * Math.cos(yaw) * UpMovement;
+		x += Math.cos(pitch) * Math.sin(yaw) * ForwardsMovement;
+		y += Math.sin(pitch) * ForwardsMovement;
 		z += Math.cos(pitch) * Math.cos(yaw) * ForwardsMovement;
 	}
 	public void rotate(double pitch, double yaw) {
