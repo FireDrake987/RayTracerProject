@@ -23,7 +23,7 @@ public class Main {
 				*/new Cube(new java.awt.Color(0, 0, 0), new java.awt.Color(255, 0, 0), new java.awt.Color(0, 255, 0), new java.awt.Color(0, 0, 255), 0, 0, 0, 10, 10, 10), 
 				new Cube(new java.awt.Color(0, 0, 0), new java.awt.Color(255, 0, 0), new java.awt.Color(0, 255, 0), new java.awt.Color(0, 0, 255), -10, -10, -10, -50, -50, -50)
 		};
-		Camera cam = new Camera(600, 600, Math.PI, (135 / 180.0) * Math.PI, 5, 5, -10, 0, 0, 0.55, scene) {
+		Camera cam = new Camera(new java.awt.Color(100, 100, 200), 600, 600, Math.PI, (135 / 180.0) * Math.PI, 5, 5, -10, 0, 0, 0.55, scene) {
 			private static final long serialVersionUID = 1L;
 			public int getMoveRight() {
 				if(Main.dPressed == true) {

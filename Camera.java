@@ -13,9 +13,11 @@ public class Camera extends JPanel {
 	public final double V_FOV, H_FOV;
 	private double x, y, z, w, h;
 	private double antialiasingValue;
+	private Color background;
 	public JFrame frame = new JFrame();
 	private MultiPlane[] planes;
-	public Camera(double width, double height, double VerticalFOV, double HorizontalFOV, double xPos, double yPos, double zPos, double Yaw, double Pitch, double quality, MultiPlane[] Planes) {
+	public Camera(Color bcol, double width, double height, double VerticalFOV, double HorizontalFOV, double xPos, double yPos, double zPos, double Yaw, double Pitch, double quality, MultiPlane[] Planes) {
+		background = bcol;
 		w = width;
 		h = height;
 		x = xPos;
@@ -56,20 +58,22 @@ public class Camera extends JPanel {
 						lowInt  = plane.getIntersection(ray);
 					}
 				}
+				double xPos = yw - yaw;
+				xPos += H_FOV * 0.5;
+				xPos /= H_FOV;
+				xPos *= w;
+				double yPos = ptch - pitch;
+				yPos += V_FOV * 0.5;
+				yPos /= V_FOV;
+				yPos *= h;
 				if(lowPlane != null && lowDist >= 0) {
-					double xPos = yw - yaw;
-					xPos += H_FOV * 0.5;
-					xPos /= H_FOV;
-					xPos *= w;
-					double yPos = ptch - pitch;
-					yPos += V_FOV * 0.5;
-					yPos /= V_FOV;
-					yPos *= h;
 					Color color = lowPlane.getColor(lowInt);
 					g2d.setColor(color);
-					g2d.fillRect((int) Math.floor(xPos), (int) Math.floor(yPos), (int) Math.ceil(1 / antialiasingValue), (int) Math.ceil(1 / antialiasingValue));
-					//System.out.printf("%s x %s y %s w %s h\n", xPos, yPos, (1 / antialiasingValue), (1 / antialiasingValue));
 				}
+				else {
+					g2d.setColor(background);
+				}
+				g2d.fillRect((int) Math.floor(xPos), (int) Math.floor(yPos), (int) Math.ceil(1 / antialiasingValue), (int) Math.ceil(1 / antialiasingValue));
 			}
 		}
 		long elapsedmillis = System.currentTimeMillis() - smillis;
@@ -77,9 +81,6 @@ public class Camera extends JPanel {
 		System.out.printf("Framerate: %s\n", 1.0 / (elapsedmillis / 1000.0));
 	}
 	public void move(double RightMovement, double UpMovement, double ForwardsMovement) {
-		//x += Math.cos(pitch) * Math.sin(yaw + Math.PI) * -RightMovement;
-		//y += Math.sin(pitch) * UpMovement;
-		//z += Math.cos(pitch) * Math.cos(yaw + 0.5 * Math.PI) * ForwardsMovement;
 		x += Math.cos(pitch) * Math.sin(yaw + 0.5 * Math.PI) * RightMovement;
 		y += Math.sin(pitch) * RightMovement;
 		z += Math.cos(pitch) * Math.cos(yaw + 0.5 * Math.PI) * RightMovement;
