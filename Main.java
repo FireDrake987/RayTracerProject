@@ -14,16 +14,12 @@ public class Main {
 	public static boolean shiftPressed = false;
 	public static void main(String[] args) {
 		MultiPlane[] scene = new MultiPlane[] {
-				/*new MultiPlane(new java.awt.Color(255, 0, 0), new Point3D(10, 10, 0), new Point3D(0, 10, 0), new Point3D(0, 10, 10), new Point3D(10, 10, 10)), 
-				new MultiPlane(new java.awt.Color(0, 255, 0), new Point3D(0, 0, 0), new Point3D(10, 0, 0), new Point3D(10, 10, 0), new Point3D(0, 10, 0)), 
-				new MultiPlane(new java.awt.Color(0, 0, 255), new Point3D(0, 0, 0), new Point3D(0, 0, 10), new Point3D(0, 10, 10), new Point3D(0, 10, 0)), 
-				new MultiPlane(new java.awt.Color(255, 255, 0), new Point3D(10, 0, 0), new Point3D(10, 0, 10), new Point3D(10, 10, 10), new Point3D(10, 10, 0)), 
-				new MultiPlane(new java.awt.Color(255, 0, 255), new Point3D(0, 0, 0), new Point3D(10, 0, 0), new Point3D(10, 0, 10), new Point3D(0, 0, 10)), 
-				new MultiPlane(new java.awt.Color(0, 255, 255), new Point3D(0, 0, 10), new Point3D(10, 0, 10), new Point3D(10, 10, 10), new Point3D(0, 10, 10)), 
-				*/new Cube(new java.awt.Color(0, 0, 0), new java.awt.Color(255, 0, 0), new java.awt.Color(0, 255, 0), new java.awt.Color(0, 0, 255), 0, 0, 0, 10, 10, 10), 
-				new Cube(new java.awt.Color(0, 0, 0), new java.awt.Color(255, 0, 0), new java.awt.Color(0, 255, 0), new java.awt.Color(0, 0, 255), -10, -10, -10, -50, -50, -50)
+				new MultiPlane(new java.awt.Color(128, 128, 255), new Point3D(0, 0, -1), new Point3D(1, 1, -1), new Point3D(1, 0, -1)), 
+				new Cube(new java.awt.Color(0, 0, 0), new java.awt.Color(255, 0, 0), new java.awt.Color(0, 255, 0), new java.awt.Color(0, 0, 255), 0, 0, 0, 10, 10, 10), 
+				new Cube(new java.awt.Color(0, 0, 0), new java.awt.Color(255, 0, 0), new java.awt.Color(0, 255, 0), new java.awt.Color(0, 0, 255), -10, -10, -10, -50, -50, -50), 
+				new Cube(new java.awt.Color(0, 255, 0), -1000, 5000, -10, 2000, 10, 2000), 
 		};
-		Camera cam = new Camera(new java.awt.Color(100, 100, 200), 600, 600, Math.PI, (135 / 180.0) * Math.PI, 5, 5, -10, 0, 0, 0.55, scene) {
+		Camera cam = new Camera(new java.awt.Color(0, 128, 255), 600, 600, Math.PI, (135 / 180.0) * Math.PI, 5, 5, -10, 0, 0, 0.20002, scene) {
 			private static final long serialVersionUID = 1L;
 			public int getMoveRight() {
 				if(Main.dPressed == true) {

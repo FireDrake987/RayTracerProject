@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 
 public class Camera extends JPanel {
 	private static final long serialVersionUID = 1L;
+	public static int intendedFramerate = 30;
 	private double yaw, pitch;//Yaw is rotY, pitch is rowX-Z(moves through yaw)
 	public final double V_FOV, H_FOV;
 	private double x, y, z, w, h;
@@ -34,7 +35,6 @@ public class Camera extends JPanel {
 		frame.setSize((int) w, (int) h);
 	}
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
 		long smillis = System.currentTimeMillis();
 		Graphics2D g2d = (Graphics2D) g;
 		for(double yw = yaw - H_FOV * 0.5; yw < yaw + H_FOV * 0.5; yw += H_FOV / (antialiasingValue * w)) {
@@ -67,8 +67,7 @@ public class Camera extends JPanel {
 				yPos /= V_FOV;
 				yPos *= h;
 				if(lowPlane != null && lowDist >= 0) {
-					Color color = lowPlane.getColor(lowInt);
-					g2d.setColor(color);
+					g2d.setColor(lowPlane.getColor(lowInt));
 				}
 				else {
 					g2d.setColor(background);
@@ -77,8 +76,20 @@ public class Camera extends JPanel {
 			}
 		}
 		long elapsedmillis = System.currentTimeMillis() - smillis;
+		if(elapsedmillis < 1000.0 / intendedFramerate) {
+			try {
+				Thread.sleep((long) ((1000.0 / intendedFramerate) - elapsedmillis));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		elapsedmillis = System.currentTimeMillis() - smillis;
 		System.out.printf("Frame took %s millis\n", elapsedmillis);
 		System.out.printf("Framerate: %s\n", 1.0 / (elapsedmillis / 1000.0));
+		Double framerate = 1.0 / (elapsedmillis / 1000.0);
+		g2d.setColor(new Color(0, 0, 0));
+		g2d.drawString(framerate.toString(), 10, 10);
+		g2d.drawString(String.format("(%s, %s, %s)", x, y, z), (int) w - 200, 10);
 	}
 	public void move(double RightMovement, double UpMovement, double ForwardsMovement) {
 		x += Math.cos(pitch) * Math.sin(yaw + 0.5 * Math.PI) * RightMovement;
@@ -91,6 +102,11 @@ public class Camera extends JPanel {
 		y += Math.sin(pitch) * ForwardsMovement;
 		z += Math.cos(pitch) * Math.cos(yaw) * ForwardsMovement;
 	}
+	public void directMove(double xMv, double yMv, double zMv) {
+		x += xMv;
+		y += yMv;
+		z += zMv;
+	}
 	public void rotate(double pitch, double yaw) {
 		this.pitch += (Math.PI * pitch) / h;
 		this.yaw += (Math.PI * yaw) / w;
@@ -102,20 +118,32 @@ public class Camera extends JPanel {
 		this.setSize((int) w, (int) h);
 		frame.repaint();
 	}
+	public double getx() {
+		return x;
+	}
+	public double gety() {
+		return y;
+	}
+	public double getz() {
+		return z;
+	}
+	public double getw() {
+		return w;
+	}
+	public double geth() {
+		return h;
+	}
 	public int getMoveRight() {return 0;}//To be overridden
 	public int getMoveUp() {return 0;}//To be overridden
 	public int getMoveForwards() {return 0;}//To be overridden
+	public void updateState() {}//To be overridden
 	public void start() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		while(true) {
+			updateState();
 			move(getMoveRight(), getMoveUp(), getMoveForwards());
 			frame.repaint();
-			try {
-				Thread.sleep(100);
-			} catch(InterruptedException e) {
-				System.err.println(e);
-			}
 		}
 	}
 }
