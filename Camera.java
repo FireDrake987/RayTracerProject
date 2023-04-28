@@ -17,6 +17,7 @@ public class Camera extends JPanel {
 	private Color background;
 	public JFrame frame = new JFrame();
 	private MultiPlane[] planes;
+	private Double framerate;
 	public Camera(Color bcol, double width, double height, double VerticalFOV, double HorizontalFOV, double xPos, double yPos, double zPos, double Yaw, double Pitch, double quality, MultiPlane[] Planes) {
 		background = bcol;
 		w = width;
@@ -84,12 +85,11 @@ public class Camera extends JPanel {
 			}
 		}
 		elapsedmillis = System.currentTimeMillis() - smillis;
-		System.out.printf("Frame took %s millis\n", elapsedmillis);
-		System.out.printf("Framerate: %s\n", 1.0 / (elapsedmillis / 1000.0));
-		Double framerate = 1.0 / (elapsedmillis / 1000.0);
+		this.framerate = 1.0 / (elapsedmillis / 1000.0);
 		g2d.setColor(new Color(0, 0, 0));
-		g2d.drawString(framerate.toString(), 10, 10);
-		g2d.drawString(String.format("(%s, %s, %s)", x, y, z), (int) w - 200, 10);
+		g2d.drawString("FPS:" + ((Double) (Math.round(Math.min(framerate, intendedFramerate) * 1000) / 1000.0)).toString(), 10, 10);
+		String pos = String.format("(%s, %s, %s)", Math.round(x * 1000) / 1000.0, Math.round(y * 1000) / 1000.0, Math.round(z * 1000) / 1000.0);
+		g2d.drawString(pos, (int) (w - g2d.getFontMetrics().stringWidth(pos) - 25), 10);
 	}
 	public void move(double RightMovement, double UpMovement, double ForwardsMovement) {
 		x += Math.cos(pitch) * Math.sin(yaw + 0.5 * Math.PI) * RightMovement;
@@ -144,6 +144,11 @@ public class Camera extends JPanel {
 			updateState();
 			move(getMoveRight(), getMoveUp(), getMoveForwards());
 			frame.repaint();
+			try {
+				Thread.sleep((long) (1000.0 / intendedFramerate));
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
